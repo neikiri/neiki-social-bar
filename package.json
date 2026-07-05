@@ -1,0 +1,39 @@
+{
+  "name": "neiki-social-bar",
+  "version": "1.0.0",
+  "description": "Lightweight, dependency-free CDN-ready social links Web Component with floating, sticky and inline positions, themes, and full accessibility support",
+  "keywords": [
+    "social-bar",
+    "social-links",
+    "social-media",
+    "web-components",
+    "custom-elements",
+    "vanilla-js",
+    "share-buttons"
+  ],
+  "scripts": {
+    "test": "node --check src/neiki-social-bar.js",
+    "build": "python3 minify.py"
+  },
+  "main": "dist/neiki-social-bar.min.js",
+  "exports": {
+    ".": "./dist/neiki-social-bar.min.js",
+    "./style": "./dist/neiki-social-bar.min.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "style": "dist/neiki-social-bar.min.css",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neikiri/neiki-social-bar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/neikiri/neiki-social-bar/issues"
+  },
+  "unpkg": "dist/neiki-social-bar.min.js",
+  "jsdelivr": "dist/neiki-social-bar.min.js",
+  "homepage": "https://github.com/neikiri/neiki-social-bar#readme",
+  "author": "Jindřich Stoklasa <jindrichstoklasa1@gmail.com>",
+  "license": "MIT"
+}

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neiki's Social Bar — Demo</title>
+<script src="../src/neiki-social-bar.js"></script>
+<style>
+  :root {
+    color-scheme: light dark;
+  }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0 0 120px;
+    background: #f7f7f9;
+    color: #1f2328;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background: #16181d; color: #f2f3f5; }
+  }
+  header {
+    position: relative;
+    padding: 48px 24px 24px;
+    text-align: center;
+  }
+  .header-github {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: inherit;
+    opacity: 0.75;
+    transition: opacity 0.15s ease;
+  }
+  .header-github:hover,
+  .header-github:focus-visible {
+    opacity: 1;
+  }
+  .header-github svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+  header h1 {
+    margin: 0 0 8px;
+    font-size: 2rem;
+  }
+  header p {
+    opacity: 0.75;
+    margin: 0;
+  }
+  main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  section {
+    margin: 48px 0;
+  }
+  section h2 {
+    font-size: 1.15rem;
+    border-bottom: 1px solid rgba(127,127,127,0.25);
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+  }
+  .card {
+    background: rgba(127,127,127,0.06);
+    border: 1px solid rgba(127,127,127,0.15);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    min-height: 90px;
+    justify-content: center;
+  }
+  .card span {
+    font-size: 0.8rem;
+    opacity: 0.65;
+  }
+  .card--light {
+    background: #ffffff;
+    border-color: rgba(0,0,0,0.08);
+  }
+  .card--dark {
+    background: #14161b;
+    border-color: rgba(255,255,255,0.08);
+  }
+  .card--dark span { color: #f2f3f5; opacity: 0.6; }
+  .card--glass {
+    background: linear-gradient(135deg, #6d5dfc 0%, #ff6b9d 50%, #ffb86b 100%);
+    border-color: rgba(255,255,255,0.4);
+  }
+  .card--glass span { color: #ffffff; opacity: 0.85; text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
+  .card--minimal {
+    background: transparent;
+    border-style: dashed;
+    border-color: rgba(127,127,127,0.35);
+  }
+  .card--auto {
+    background: repeating-linear-gradient(135deg, rgba(127,127,127,0.08), rgba(127,127,127,0.08) 10px, transparent 10px, transparent 20px);
+  }
+  pre {
+    background: rgba(127,127,127,0.1);
+    border-radius: 8px;
+    padding: 12px 16px;
+    overflow-x: auto;
+    font-size: 0.85rem;
+  }
+  button.demo-btn {
+    font: inherit;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(127,127,127,0.3);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+  #log {
+    background: rgba(127,127,127,0.1);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.8rem;
+    max-height: 160px;
+    overflow-y: auto;
+    font-family: ui-monospace, monospace;
+  }
+  .header-logo {
+    height: 60px;
+    width: auto;
+  }
+  @media (max-width: 768px) {
+    .header-logo {
+      height: 40px;
+    }
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .header-logo {
+      order: 1;
+    }
+    header p {
+      order: 2;
+    }
+    .header-github {
+      position: static;
+      order: 3;
+      margin-top: 12px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="header-github" href="https://github.com/neikiri/neiki-social-bar" target="_blank" rel="noopener noreferrer" aria-label="View on GitHub">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.09 3.29 9.4 7.86 10.93.58.1.79-.25.79-.56 0-.27-.01-1.15-.02-2.09-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.73.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.38-5.25 5.67.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>
+  </a>
+  <!--<h1>Neiki's Social Bar</h1>-->
+  <img src="../assets/img/logo.svg" class="header-logo">
+  <p>A lightweight, CDN-ready Web Component for social links — no framework required.</p>
+</header>
+
+<main>
+
+  <section>
+    <h2>Basic usage</h2>
+    <div class="card">
+      <neiki-social-bar
+        facebook="https://facebook.com/example"
+        x="https://x.com/example"
+        instagram="https://instagram.com/example"
+        github="https://github.com/example"
+        email="hello@example.com"
+      ></neiki-social-bar>
+    </div>
+    <pre>&lt;neiki-social-bar
+  facebook="https://facebook.com/example"
+  x="https://x.com/example"
+  instagram="https://instagram.com/example"
+  github="https://github.com/example"
+  email="hello@example.com"
+&gt;&lt;/neiki-social-bar&gt;</pre>
+  </section>
+
+  <section>
+    <h2>Themes</h2>
+    <p style="opacity:0.75; margin-top:-8px;">Each theme is a genuinely different look, not just a recolored copy. Dark and minimal default to monochrome icons for a cleaner, uniform silhouette; light, glass and auto keep full-color brand chips.</p>
+    <div class="grid">
+      <div class="card card--light">
+        <neiki-social-bar theme="light" color="brand" shape="rounded" facebook="https://facebook.com/example" x="https://x.com/example" instagram="https://instagram.com/example" linkedin="https://linkedin.com/company/example"></neiki-social-bar>
+        <span>light — brand chips</span>
+      </div>
+      <div class="card card--dark">
+        <neiki-social-bar theme="dark" color="monochrome" orientation="vertical" shape="square" linkedin="https://linkedin.com/company/example" facebook="https://facebook.com/example" discord="https://discord.gg/example" email="hello@example.com" youtube="https://youtube.com/example" x="https://x.com/example" github="https://github.com/example"></neiki-social-bar>
+        <span>dark — monochrome</span>
+      </div>
+      <div class="card card--glass">
+        <neiki-social-bar theme="glass" color="brand" shape="circle" facebook="https://facebook.com/example" x="https://x.com/example" instagram="https://instagram.com/example" linkedin="https://linkedin.com/company/example" youtube="https://youtube.com/example" tiktok="https://tiktok.com/@example" github="https://github.com/example"></neiki-social-bar>
+        <span>glass — frosted, brand chips</span>
+      </div>
+      <div class="card card--minimal">
+        <neiki-social-bar theme="minimal" color="monochrome" size="large" github="https://github.com/example" x="https://x.com/example" youtube="https://youtube.com/example"></neiki-social-bar>
+        <span>minimal — flat, no chips</span>
+      </div>
+      <div class="card card--auto">
+        <neiki-social-bar theme="auto" color="brand" github="https://github.com/example" x="https://x.com/example" youtube="https://youtube.com/example"></neiki-social-bar>
+        <span>auto (follows OS)</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Shapes</h2>
+    <div class="grid">
+      <div class="card"><neiki-social-bar shape="square" github="https://github.com/example" x="https://x.com/example" discord="https://discord.gg/example"></neiki-social-bar><span>square</span></div>
+      <div class="card"><neiki-social-bar shape="rounded" github="https://github.com/example" x="https://x.com/example" discord="https://discord.gg/example"></neiki-social-bar><span>rounded</span></div>
+      <div class="card"><neiki-social-bar shape="pill" github="https://github.com/example" x="https://x.com/example" discord="https://discord.gg/example"></neiki-social-bar><span>pill</span></div>
+      <div class="card"><neiki-social-bar shape="circle" github="https://github.com/example" x="https://x.com/example" discord="https://discord.gg/example"></neiki-social-bar><span>circle</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Sizes</h2>
+    <div class="grid">
+      <div class="card"><neiki-social-bar size="small" github="https://github.com/example" linkedin="https://linkedin.com/company/example"></neiki-social-bar><span>small</span></div>
+      <div class="card"><neiki-social-bar size="medium" github="https://github.com/example" linkedin="https://linkedin.com/company/example"></neiki-social-bar><span>medium</span></div>
+      <div class="card"><neiki-social-bar size="large" github="https://github.com/example" linkedin="https://linkedin.com/company/example"></neiki-social-bar><span>large</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Display modes</h2>
+    <div class="grid">
+      <div class="card"><neiki-social-bar display="icons" github="https://github.com/example" website="https://example.com" rss="https://example.com/feed.xml"></neiki-social-bar><span>icons</span></div>
+      <div class="card"><neiki-social-bar display="labels" github="https://github.com/example" website="https://example.com" rss="https://example.com/feed.xml"></neiki-social-bar><span>labels</span></div>
+      <div class="card"><neiki-social-bar display="icons-labels" github="https://github.com/example" website="https://example.com" rss="https://example.com/feed.xml"></neiki-social-bar><span>icons-labels</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Color modes</h2>
+    <div class="grid">
+      <div class="card"><neiki-social-bar color="brand" facebook="https://facebook.com/example" instagram="https://instagram.com/example" youtube="https://youtube.com/example" tiktok="https://tiktok.com/@example"></neiki-social-bar><span>brand</span></div>
+      <div class="card"><neiki-social-bar color="monochrome" facebook="https://facebook.com/example" instagram="https://instagram.com/example" youtube="https://youtube.com/example" tiktok="https://tiktok.com/@example"></neiki-social-bar><span>monochrome</span></div>
+      <div class="card" id="custom-color-card">
+        <neiki-social-bar id="custom-color-bar" color="custom" facebook="https://facebook.com/example" instagram="https://instagram.com/example" youtube="https://youtube.com/example"></neiki-social-bar>
+        <span>custom (CSS variable override)</span>
+      </div>
+    </div>
+    <style>
+      #custom-color-bar { --nsb-color: #7c3aed; --nsb-color-hover: #5b21b6; }
+    </style>
+  </section>
+
+  <section>
+    <h2>Orientation</h2>
+    <div class="grid">
+      <div class="card"><neiki-social-bar orientation="horizontal" github="https://github.com/example" x="https://x.com/example" discord="https://discord.gg/example"></neiki-social-bar><span>horizontal</span></div>
+      <div class="card"><neiki-social-bar orientation="vertical" github="https://github.com/example" x="https://x.com/example" discord="https://discord.gg/example"></neiki-social-bar><span>vertical</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Collapsible mode</h2>
+    <div class="card">
+      <neiki-social-bar
+        collapsible
+        collapsed
+        label="Follow us"
+        facebook="https://facebook.com/example"
+        instagram="https://instagram.com/example"
+        github="https://github.com/example"
+        email="hello@example.com"
+      ></neiki-social-bar>
+    </div>
+    <pre>&lt;neiki-social-bar collapsible collapsed label="Follow us" ...&gt;&lt;/neiki-social-bar&gt;</pre>
+  </section>
+
+  <section>
+    <h2>Declarative config</h2>
+    <div class="card">
+      <neiki-social-bar
+        position="inline"
+        theme="auto"
+        shape="rounded"
+        size="medium"
+        facebook="https://facebook.com/example"
+        x="https://x.com/example"
+        instagram="https://instagram.com/example"
+        github="https://github.com/example"
+        email="hello@example.com"
+      ></neiki-social-bar>
+    </div>
+  </section>
+
+  <section>
+    <h2>JavaScript configuration</h2>
+    <div class="card">
+      <neiki-social-bar id="js-config-bar"></neiki-social-bar>
+    </div>
+    <pre>document.querySelector('#js-config-bar').setConfig({
+  theme: 'auto',
+  shape: 'rounded',
+  size: 'medium',
+  links: {
+    github: 'https://github.com/neikiri',
+    website: 'https://example.com'
+  }
+});</pre>
+  </section>
+
+  <section>
+    <h2>Custom / arbitrary links</h2>
+    <div class="card">
+      <neiki-social-bar id="custom-links-bar"></neiki-social-bar>
+    </div>
+    <pre>bar.addLink('mastodon', 'https://mastodon.social/@example', {
+  label: 'Mastodon',
+  icon: 'simple-icons:mastodon',
+  color: '#6364FF'
+});</pre>
+  </section>
+
+  <section>
+    <h2>Methods playground</h2>
+    <div class="card" style="gap: 16px;">
+      <neiki-social-bar id="methods-bar" collapsible github="https://github.com/example" x="https://x.com/example"></neiki-social-bar>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+        <button class="demo-btn" data-action="show">show()</button>
+        <button class="demo-btn" data-action="hide">hide()</button>
+        <button class="demo-btn" data-action="toggle">toggle()</button>
+        <button class="demo-btn" data-action="open">open()</button>
+        <button class="demo-btn" data-action="close">close()</button>
+        <button class="demo-btn" data-action="refresh">refresh()</button>
+      </div>
+    </div>
+    <h3>Event log</h3>
+    <div id="log"></div>
+  </section>
+
+  <section>
+    <h2>Multiple instances</h2>
+    <div class="grid">
+      <div class="card"><neiki-social-bar size="small" shape="pill" github="https://github.com/example"></neiki-social-bar></div>
+      <div class="card"><neiki-social-bar size="medium" shape="circle" x="https://x.com/example"></neiki-social-bar></div>
+      <div class="card"><neiki-social-bar size="large" shape="rounded" youtube="https://youtube.com/example"></neiki-social-bar></div>
+    </div>
+    <p style="opacity:0.7; font-size:0.9rem;">Each instance manages its own state independently — the Iconify loader script and Custom Element are only registered once.</p>
+  </section>
+
+  <section>
+    <h2>CDN-style usage</h2>
+    <pre>&lt;script src="https://cdn.neikiri.dev/neiki-social-bar/neiki-social-bar.min.js"&gt;&lt;/script&gt;
+
+&lt;neiki-social-bar github="https://github.com/neikiri"&gt;&lt;/neiki-social-bar&gt;</pre>
+  </section>
+
+  <section>
+    <h2>Floating / top / bottom positions</h2>
+    <p style="opacity:0.75;">Scroll the page — these bars are fixed to the viewport.</p>
+  </section>
+
+</main>
+
+<neiki-social-bar position="floating-right" size="small" facebook="https://facebook.com/example" x="https://x.com/example" instagram="https://instagram.com/example"></neiki-social-bar>
+<neiki-social-bar position="bottom-left" size="small" theme="dark" github="https://github.com/example" discord="https://discord.gg/example"></neiki-social-bar>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var jsConfigBar = document.querySelector('#js-config-bar');
+    jsConfigBar.setConfig({
+      position: 'inline',
+      theme: 'auto',
+      shape: 'rounded',
+      size: 'medium',
+      links: {
+        github: 'https://github.com/neikiri',
+        website: 'https://example.com'
+      }
+    });
+
+    var customLinksBar = document.querySelector('#custom-links-bar');
+    customLinksBar.setConfig({
+      links: { github: 'https://github.com/example' }
+    });
+    customLinksBar.addLink('mastodon', 'https://mastodon.social/@example', {
+      label: 'Mastodon',
+      icon: 'simple-icons:mastodon',
+      color: '#6364FF'
+    });
+
+    var methodsBar = document.querySelector('#methods-bar');
+    var log = document.querySelector('#log');
+    function logLine(text) {
+      var line = document.createElement('div');
+      line.textContent = '[' + new Date().toLocaleTimeString() + '] ' + text;
+      log.prepend(line);
+    }
+
+    ['ready', 'click', 'open', 'close', 'change', 'error'].forEach(function (name) {
+      methodsBar.addEventListener('neiki-social-bar:' + name, function (event) {
+        logLine(name + ' — ' + JSON.stringify(event.detail && event.detail.platform ? { platform: event.detail.platform } : {}));
+      });
+    });
+
+    document.querySelectorAll('[data-action]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var action = button.getAttribute('data-action');
+        methodsBar[action]();
+        logLine('called ' + action + '()');
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
